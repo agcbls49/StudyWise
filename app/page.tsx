@@ -4,14 +4,14 @@ export default function Home() {
   return (
     <div className="mt-25 md:container md:mx-auto text-center">
       <div className="text-3xl">
-        Welcome to <span className="font-bold">Study Wise</span> 
+        Welcome to <span className="font-bold">StudyWise</span> 
       </div>
       <div className="mt-10">
-        <div className="text-2xl">
-          A study session tracker made using NextJS
+        <div className="text-2xl text-blue-600">
+          A simple study session tracker
         </div>
       </div>
-      <div className="mt-20 text-5xl flex flex-col items-center justify-center">
+      <div className="mt-20 flex justify-center">
         <Stopwatch/>
       </div>
     </div>
