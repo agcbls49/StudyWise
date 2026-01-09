@@ -1,6 +1,6 @@
 "use client"
 
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect, useRef, SyntheticEvent} from 'react';
 import { Play } from 'lucide-react';
 import { RotateCcw } from 'lucide-react';
 import { History } from 'lucide-react';
@@ -17,6 +17,8 @@ export default function Timer() {
     // used for starting/stopping the interval
     const intervalIdRef = useRef<number | null>(null);
     const startTimeRef = useRef<number>(0);
+    // for the task name input field
+    const [taskname, setTaskName] = useState<string>("My Task");
 
     useEffect(() => {
         if(isRunning){
@@ -34,6 +36,16 @@ export default function Timer() {
 
     }, [isRunning]);
 
+    // for the task name input field
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTaskName(event.target.value);
+    }
+
+    const handleSubmit = (event: SyntheticEvent) => {
+        event.preventDefault();
+        if(taskname.trim().length == 0) return alert("Task name cannot be empty");
+    }
+
     function start() {
         setIsRunning(true);
         startTimeRef.current = Date.now() - elapsedTime;
@@ -49,10 +61,21 @@ export default function Timer() {
 
     function save() {
         stop();
-        // save to local storage
-        const storedTime = JSON.parse(localStorage.getItem("sessions") || "[]");
-        storedTime.push(formatTime());
-        localStorage.setItem("sessions", JSON.stringify(storedTime));
+        if(taskname.trim().length == 0) return;
+        alert(`Task "${taskname}" was saved`);
+
+        // load previous sessions from localStorage
+        const storedSessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+
+        // object for storing both time and the task name
+        const sessionEntry = {
+            task: taskname,
+            time: formatTime()
+        };
+
+        // push the object to the array and save into local storage
+        storedSessions.push(sessionEntry);
+        localStorage.setItem("sessions", JSON.stringify(storedSessions));
     }
 
     function formatTime() {
@@ -90,29 +113,46 @@ export default function Timer() {
                     {formatTime()}
                 </div>
             </div>
-            <div className="mt-15 space-x-5">
-                <Link href={"/history"}>
-                    <button className="bg-black border border-transparent hover:bg-white hover:text-black hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer">
-                        <History />
+            <div className='mt-10 text-xl w-full max-w-sm min-w-50 flex space-x-2'>
+                <form onSubmit={handleSubmit}>
+                    <input type="text" value={taskname} onChange={handleChange}
+                    className="w-full text-justify mb-5 bg-white placeholder:text-gray-400 text-black border border-transparent rounded-md px-2 py-2 transition duration-300 ease focus:outline-none shadow-lg" 
+                    placeholder="Task Name"/>
+                    <button type="submit"
+                    className="bg-[#28A745] border border-transparent hover:bg-[#1E7E34] hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer"
+                    onClick={save}>
+                        <Save />
                     </button>
-                </Link>
-                <button className="bg-[#28A745] border border-transparent hover:bg-[#1E7E34] hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer"
-                onClick={start}>
-                    <Play />
+                    
+                </form>
+            </div>
+            <div className="mt-15 space-x-5">
+                <button className={`border border-transparent shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer
+                    ${isRunning ? "bg-black hover:bg-[#080808] hover:transition-all duration-300 ease-in-out" : "bg-[#28A745] hover:bg-[#1E7E34]" }`}
+                    
+                    // start or stop the timer based on if its running
+                    onClick={() => {
+                        if(isRunning) { 
+                            stop();
+                        } else {
+                            start(); 
+                        }
+                    }}>
+                    
+                    {/* change icon based on if the timer is running or not */}
+                    {isRunning ? <Square/> : <Play/>}
                 </button>
-                <button className="bg-black border border-transparent hover:bg-white hover:text-black hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer"
-                onClick={stop}>
-                    <Square />
-                </button>
-                <button className="bg-[#DC3545] border border-transparent hover:bg-[#A71D2A] hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer"
+                <button className="bg-[#DC3545] border border-transparent hover:bg-[#A71D2A] hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer"
                 onClick={reset}>
                     <RotateCcw />
                 </button>
-                <button className="bg-[#28A745] border border-transparent hover:bg-[#1E7E34] hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer"
-                onClick={save}>
-                    <Save />
-                </button>
+                <Link href={"/history"}>
+                    <button className="bg-black border border-transparent hover:bg-[#141414] hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer">
+                        <History />
+                    </button>
+                </Link>
             </div>
+            <br />
         </div>
     );
 }

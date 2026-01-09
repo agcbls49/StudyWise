@@ -6,12 +6,24 @@ import { Trash } from 'lucide-react';
 
 import Link from "next/link";
 
+type Session = {
+    task: string;
+    time: string;
+};
+
 export default function History() {
-    const [sessions, setSessions] = useState<string[]>(() => {
-        if (typeof window !== "undefined") {
-            return JSON.parse(localStorage.getItem("sessions") || "[]");
+    const [sessions, setSessions] = useState<Session[]>(() => {
+        if (typeof window === "undefined") return [];
+
+        const stored = localStorage.getItem("sessions");
+        if (!stored) return [];
+
+        // get items from local storage
+        try {
+            return JSON.parse(stored) as Session[];
+        } catch {
+            return [];
         }
-        return [];
     });
 
     function removeHistory() {
@@ -28,11 +40,11 @@ export default function History() {
                 Study Session History 
             </div>
             <div className="mt-10 text-2xl">
-                {sessions.map((time, index) => 
+                {sessions.map((entry, index) => 
                     (
-                        // show session number and time
                         <div key={index}>
-                            Session {index + 1}: {time}
+                            {/* show task name with time */}
+                            {entry.task}: {entry.time}
                         </div>
                     )
                 )}
