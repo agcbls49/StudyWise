@@ -67,8 +67,12 @@ export default function Timer() {
         // load previous sessions from localStorage
         const storedSessions = JSON.parse(localStorage.getItem("sessions") || "[]");
 
+        // identifier for the task entry to go in local storage
+        const id = storedSessions.length;
+
         // object for storing both time and the task name
         const sessionEntry = {
+            id: id,
             task: taskname,
             time: formatTime()
         };
@@ -119,7 +123,7 @@ export default function Timer() {
                     className="w-full text-justify mb-5 bg-white placeholder:text-gray-400 text-black border border-transparent rounded-md px-2 py-2 transition duration-300 ease focus:outline-none shadow-lg" 
                     placeholder="Task Name"/>
                     <button type="submit"
-                    className="bg-[#28A745] border border-transparent hover:bg-[#1E7E34] hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer"
+                    className="bg-green border border-transparent hover:bg-hoverGreen hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer"
                     onClick={save}>
                         <Save />
                     </button>
@@ -127,8 +131,8 @@ export default function Timer() {
                 </form>
             </div>
             <div className="mt-15 space-x-5">
-                <button className={`border border-transparent shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer
-                    ${isRunning ? "bg-black hover:bg-[#080808] hover:transition-all duration-300 ease-in-out" : "bg-[#28A745] hover:bg-[#1E7E34]" }`}
+                <button className={`border border-transparent shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer hover:transition-all duration-300 ease-in-out
+                    ${isRunning ? "bg-black hover:bg-hoverBlack" : "bg-green hover:bg-hoverGreen" }`}
                     
                     // start or stop the timer based on if its running
                     onClick={() => {
@@ -142,12 +146,12 @@ export default function Timer() {
                     {/* change icon based on if the timer is running or not */}
                     {isRunning ? <Square/> : <Play/>}
                 </button>
-                <button className="bg-[#DC3545] border border-transparent hover:bg-[#A71D2A] hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer"
+                <button className="bg-red border border-transparent hover:bg-hoverRed hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer"
                 onClick={reset}>
                     <RotateCcw />
                 </button>
                 <Link href={"/history"}>
-                    <button className="bg-black border border-transparent hover:bg-[#141414] hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer">
+                    <button className="bg-black border border-transparent hover:bg-hoverBlack hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer">
                         <History />
                     </button>
                 </Link>

@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { ArrowBigLeft } from 'lucide-react';
 import { Trash } from 'lucide-react';
+import { Eraser } from 'lucide-react';
 
 import Link from "next/link";
 
 type Session = {
+    id: number;
     task: string;
     time: string;
 };
@@ -27,7 +29,7 @@ export default function History() {
     });
 
     function removeHistory() {
-        if (confirm("This will delete all sessions?")) {
+        if (confirm("Are you sure you want to delete all sessions?")) {
             localStorage.clear();
             // update state so UI refreshes
             setSessions([]);
@@ -39,23 +41,42 @@ export default function History() {
             <div className="text-3xl font-bold">
                 Study Session History 
             </div>
-            <div className="mt-10 text-2xl">
-                {sessions.map((entry, index) => 
+            <div className="flex flex-col items-center justify-center mt-10 text-2xl">
+                {/* because of map entry becomes each item from the sessions array */}
+                {sessions.map((entry) => 
                     (
-                        <div key={index}>
+                        <div key={entry.id}
+                        className="flex items-center justify-between w-96 mb-3 bg-white text-black border border-transparent rounded-md px-2 py-2 shadow-xl/20">
                             {/* show task name with time */}
                             {entry.task}: {entry.time}
+
+                            <button className="cursor-pointer bg-red text-white hover:bg-hoverRed px-3 py-3 rounded-md hover:transition-all duration-300 ease-in-out"
+                            onClick={() => {
+                                // fetch all session items
+                                const storedSessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+
+                                if (confirm("Are you sure you want to delete this session?")) {
+                                    // filter the array to remove the session to delete
+                                    const filteredSessions = storedSessions.filter((session: Session) => session.id !== entry.id);
+
+                                    // update the local storage after deleting the task
+                                    localStorage.setItem("sessions", JSON.stringify(filteredSessions));
+                                    setSessions(filteredSessions);
+                                }
+                            }}>
+                                <Eraser />
+                            </button>
                         </div>
                     )
                 )}
             </div>
             <div className="mt-10 space-x-5">
                 <Link href={"/"}>
-                    <button className="bg-black border border-transparent hover:bg-white hover:text-black hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer">
+                    <button className="bg-black border border-transparent hover:bg-hoverBlack hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer">
                         <ArrowBigLeft />
                     </button>
                 </Link>
-                <button className="bg-[#DC3545] border border-transparent hover:bg-[#A71D2A] hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer"
+                <button className="bg-red border border-transparent hover:bg-hoverRed hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer"
                 onClick={removeHistory}>
                     <Trash />
                 </button>
