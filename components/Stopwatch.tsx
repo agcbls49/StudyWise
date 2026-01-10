@@ -11,12 +11,15 @@ import Link from 'next/link';
 
 export default function Timer() {
     const [isRunning, setIsRunning] = useState<boolean>(false);
+
     // how long the stopwatch has run
     const [elapsedTime, setElapsedTime] = useState<number>(0);
+
     // useRef used for persistency across renders
     // used for starting/stopping the interval
     const intervalIdRef = useRef<number | null>(null);
     const startTimeRef = useRef<number>(0);
+
     // for the task name input field
     const [taskname, setTaskName] = useState<string>("My Task");
 
@@ -62,24 +65,28 @@ export default function Timer() {
     function save() {
         stop();
         if(taskname.trim().length == 0) return;
-        alert(`Task "${taskname}" was saved`);
+        
+        if (confirm("Are you sure you want to save this session?")) {
+            // load previous sessions from localStorage
+            const storedSessions = JSON.parse(localStorage.getItem("sessions") || "[]");
 
-        // load previous sessions from localStorage
-        const storedSessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+            // identifier for the task entry to go in local storage
+            const id = storedSessions.length;
 
-        // identifier for the task entry to go in local storage
-        const id = storedSessions.length;
+            // object for storing both time and the task name
+            const sessionEntry = {
+                id: id,
+                date: new Date,
+                task: taskname,
+                time: formatTime()
+            };
 
-        // object for storing both time and the task name
-        const sessionEntry = {
-            id: id,
-            task: taskname,
-            time: formatTime()
-        };
+            // push the object to the array and save into local storage
+            storedSessions.push(sessionEntry);
+            localStorage.setItem("sessions", JSON.stringify(storedSessions));
 
-        // push the object to the array and save into local storage
-        storedSessions.push(sessionEntry);
-        localStorage.setItem("sessions", JSON.stringify(storedSessions));
+            alert(`Task "${taskname}" was saved`);
+        }
     }
 
     function formatTime() {
@@ -130,7 +137,7 @@ export default function Timer() {
                     
                 </form>
             </div>
-            <div className="mt-15 space-x-5">
+            <div className="mt-15 space-x-10">
                 <button className={`border border-transparent shadow-xl/20 text-white text-2xl py-4 px-6 rounded-lg cursor-pointer hover:transition-all duration-300 ease-in-out
                     ${isRunning ? "bg-black hover:bg-hoverBlack" : "bg-green hover:bg-hoverGreen" }`}
                     

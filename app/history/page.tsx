@@ -1,14 +1,15 @@
 "use client"
 
 import { useState } from "react";
-import { ArrowBigLeft } from 'lucide-react';
-import { Trash } from 'lucide-react';
+import { House } from 'lucide-react';import { Trash } from 'lucide-react';
 import { Eraser } from 'lucide-react';
+import { ChartLine } from 'lucide-react';
 
 import Link from "next/link";
 
 type Session = {
     id: number;
+    date: string;
     task: string;
     time: string;
 };
@@ -41,6 +42,11 @@ export default function History() {
             <div className="text-3xl font-bold">
                 Study Session History 
             </div>
+            <div className="mt-10">
+                <div className="text-2xl">
+                    Your saved sessions for today
+                </div>
+            </div>
             <div className="flex flex-col items-center justify-center mt-10 text-2xl">
                 {/* because of map entry becomes each item from the sessions array */}
                 {sessions.map((entry) => 
@@ -48,7 +54,7 @@ export default function History() {
                         <div key={entry.id}
                         className="flex items-center justify-between w-96 mb-3 bg-white text-black border border-transparent rounded-md px-2 py-2 shadow-xl/20">
                             {/* show task name with time */}
-                            {entry.task}: {entry.time}
+                            {new Date(entry.date).toLocaleDateString()} - {entry.task}: {entry.time}
 
                             <button className="cursor-pointer bg-red text-white hover:bg-hoverRed px-3 py-3 rounded-md hover:transition-all duration-300 ease-in-out"
                             onClick={() => {
@@ -70,10 +76,15 @@ export default function History() {
                     )
                 )}
             </div>
-            <div className="mt-10 space-x-5">
+            <div className="mt-10 space-x-10">
                 <Link href={"/"}>
                     <button className="bg-black border border-transparent hover:bg-hoverBlack hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer">
-                        <ArrowBigLeft />
+                        <House />
+                    </button>
+                </Link>
+                <Link href={"progress/"}>
+                    <button className="bg-black border border-transparent hover:bg-hoverBlack hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer">
+                        <ChartLine />
                     </button>
                 </Link>
                 <button className="bg-red border border-transparent hover:bg-hoverRed hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer"
