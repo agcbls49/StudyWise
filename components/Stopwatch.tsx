@@ -13,7 +13,7 @@ export default function Timer() {
     const [isRunning, setIsRunning] = useState<boolean>(false);
 
     // how long the stopwatch has run
-    const [elapsedTime, setElapsedTime] = useState<number>(60000);
+    const [elapsedTime, setElapsedTime] = useState<number>(0);
 
     // useRef used for persistency across renders
     // used for starting/stopping the interval
@@ -139,7 +139,6 @@ export default function Timer() {
                     onClick={save}>
                         <Save />
                     </button>
-                    
                 </form>
             </div>
             <div className="mt-15 space-x-10">

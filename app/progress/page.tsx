@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { House } from 'lucide-react';
 import { ArrowBigLeft } from 'lucide-react';
+import { Download } from 'lucide-react';
 import Link from "next/link";
 
 type Session = {
@@ -70,6 +71,35 @@ export default function Progress() {
                 return [];
             }
         });
+
+    function exportJSON():void {
+        const stored = localStorage.getItem("sessions");
+
+        if (!stored) {
+            alert("No data found!");
+            return;
+        }
+
+        if(stored) {
+            // treat the data from sessions like a real file
+            const blob = new Blob([stored], {type: "application/json"});
+
+            // for creating temporary download link
+            const url:string = URL.createObjectURL(blob);
+            const tempLink = document.createElement("a");
+
+            tempLink.href = url;
+            tempLink.setAttribute("download", "exported_sessions.json");
+
+            // to make the download happen
+            document.body.appendChild(tempLink);
+            tempLink.click();
+
+            // remove the link and the temporary url created
+            document.body.removeChild(tempLink);
+            window.URL.revokeObjectURL(url);
+        }
+    }
 
     // calculate total time for this week
     function calculateWeekTotal(sessions: Session[]): string {
@@ -139,27 +169,32 @@ export default function Progress() {
             <div className="text-3xl font-bold">
                 Progress Tracking
             </div>
+            <div className="mt-10">
+                <div className="text-2xl">
+                    Your tracked sessions
+                </div>
+            </div>
             <div className="flex flex-row mt-10 justify-between">
-                <div className="border w-80 h-40 rounded-md">
+                <div className="border w-80 h-150 rounded-md">
                     <div className="text-2xl">
                         <span className="font-bold">Total Time this Week</span>
-                        <div className="mt-5">
+                        <div className="mt-2">
                             {totalSessionsThisWeek}
                         </div>
                     </div>
                 </div>
-                <div className="border w-80 h-40 rounded-md">
+                <div className="border w-80 h-150 rounded-md">
                     <div className="text-2xl">
                         <span className="font-bold">Total Time Today</span>
-                        <div className="mt-5">
+                        <div className="mt-2">
                             {totalSessionsToday}
                         </div>
                     </div>
                 </div>
-                <div className="border w-80 h-40 rounded-md">
+                <div className="border w-80 h-150 rounded-md">
                     <div className="text-2xl">
                         <span className="font-bold">All-time Total</span>
-                        <div className="mt-5">
+                        <div className="mt-2">
                             {totalSessionsAllTime}
                         </div>
                     </div>
@@ -171,12 +206,17 @@ export default function Progress() {
                         <ArrowBigLeft />
                     </button>
                 </Link>
+                <button className="bg-black border border-transparent hover:bg-hoverBlack hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer"
+                onClick={exportJSON}>
+                    <Download />
+                </button>
                 <Link href={"/"}>
                     <button className="bg-black border border-transparent hover:bg-hoverBlack hover:transition-all duration-300 ease-in-out shadow-xl/20 text-white text-2xl font-bold py-4 px-6 rounded-lg cursor-pointer">
                         <House />
                     </button>
                 </Link>
             </div>
+            <br />
         </div>
     );
 }
