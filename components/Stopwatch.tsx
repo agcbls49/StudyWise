@@ -13,7 +13,7 @@ export default function Timer() {
     const [isRunning, setIsRunning] = useState<boolean>(false);
 
     // how long the stopwatch has run
-    const [elapsedTime, setElapsedTime] = useState<number>(0);
+    const [elapsedTime, setElapsedTime] = useState<number>(60000);
 
     // useRef used for persistency across renders
     // used for starting/stopping the interval
@@ -94,11 +94,16 @@ export default function Timer() {
         const origHours = 3600000;
         const origMinutes = 60000;
 
+        // for the time
+        const oneThousand = 1000;
+        const sixty = 60;
+        const ten = 10;
+
         // Time conversion (ms to whole number)
-        const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
-        const minutes = Math.floor(elapsedTime / (1000 * 60) % 60);
-        const seconds = Math.floor(elapsedTime / (1000) % 60);
-        const milliseconds = Math.floor(elapsedTime % 1000 / 10);
+        const hours = Math.floor(elapsedTime / (oneThousand * sixty * sixty));
+        const minutes = Math.floor(elapsedTime / (oneThousand * sixty) % sixty);
+        const seconds = Math.floor(elapsedTime / (oneThousand) % sixty);
+        const milliseconds = Math.floor(elapsedTime % oneThousand / ten);
 
         // Add 0 before the number for display
         const displayHours = String(hours).padStart(2, "0");

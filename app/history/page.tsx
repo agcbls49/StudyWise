@@ -4,7 +4,6 @@ import { useState } from "react";
 import { House } from 'lucide-react';import { Trash } from 'lucide-react';
 import { Eraser } from 'lucide-react';
 import { ChartLine } from 'lucide-react';
-
 import Link from "next/link";
 
 type Session = {
@@ -38,7 +37,7 @@ export default function History() {
     }
 
     return(
-        <div className="mt-25 md:container md:mx-auto text-center">
+        <div className="mt-10 md:container md:mx-auto text-center">
             <div className="text-3xl font-bold">
                 Study Session History 
             </div>
@@ -92,6 +91,7 @@ export default function History() {
                     <Trash />
                 </button>
             </div>
+            <br/>
         </div>
     );
 }
