@@ -15,13 +15,13 @@ Live at: https://studywisetracker.netlify.app/
 ## Screenshots
 
 ### Home
-![Home Page](public\home.png)
+<img width="398" height="799" alt="Image" src="https://github.com/user-attachments/assets/b52d61c7-8f10-4f40-8dcf-ed20f9751dff" />
 
 ### Session History
-![Session History](public\history.png)
+<img width="438" height="884" alt="Image" src="https://github.com/user-attachments/assets/47ba8cfe-a73f-414e-b4b9-a4330f01cf3b" />
 
 ### Progress Tracking
-![Progress Tracker](public\progress.png)
+<img width="1558" height="881" alt="Image" src="https://github.com/user-attachments/assets/726498b3-bcf3-4d5e-a81b-a4348356fffd" />
 
 ## Important Notes
 The application was tested on a computer so UI reponsiveness and functionality may differ or is limited if used in other devices.
