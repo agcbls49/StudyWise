@@ -30,13 +30,14 @@ The application was tested on a computer so UI reponsiveness and functionality m
 
 **Problem:** <i>Session history suffers from ID duplication issues causing React JS key errors and individual task deletion errors.</i> If both tasks have the same name (e.g. "My Task") then deleting either will result in both tasks being deleted even if both have different times.
 
-**Errors:**
+**Development Errors:**
 - "Each child in a list should have a unique 'key' prop"
 - Errors persist even after clearing localStorage
 
-**Currently**
+**Production Behavior:**
 - Page still renders and functions
 - Features **partially** work despite errors
+- Data corruption risk when duplicate names exist
 
 ## Local Setup
 1. Download the project and install [NodeJS](https://nodejs.org/en).
