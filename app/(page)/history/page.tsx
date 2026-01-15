@@ -50,6 +50,8 @@ export default function History() {
                 {/* because of map entry becomes each item from the sessions array */}
                 {sessions.map((entry) => 
                     (
+                        // THIS GIVES SO MUCH ISSUE OMG LITERALLY I'M NEVER TOUCHING IT
+                        // IT KEEPS YAPPING ABOUT DUPLICATE ID'S BUT STILL RENDERS THE TASKS
                         <div key={entry.id}
                         className="flex items-center justify-between w-96 mb-3 bg-white text-black border border-transparent rounded-md px-2 py-2 shadow-xl/20">
                             {/* show task name with time */}

@@ -71,6 +71,10 @@ export default function Timer() {
             const storedSessions = JSON.parse(localStorage.getItem("sessions") || "[]");
 
             // identifier for the task entry to go in local storage
+            // I LITERALLY CANNOT FIX THE DUPLICATE ID ISSUE BECAUSE EVERY
+            // METHOD WON'T WORK AND NOT EVEN AI CAN FIX SPAGHETTI 
+            // MADE IN THE WEE HOURS OF THE MORNING. CLEARING LOCAL 
+            // STORAGE DOESN'T WORK.
             const id = storedSessions.length;
 
             // object for storing both time and the task name
